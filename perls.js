@@ -6,16 +6,10 @@ var
 var
   replacePattern= /([^\\]*?)\$(?:(\d+)|(?:\+\{(\w+)\}))/g
 
-function process(text){
-
-	var
-	  capture= captureText(text),
-	  remainder= capture.index,
-	  replace= replaceText(text.substring(index))
-	return {capture,replace}
-	  
-}
-
+/**
+ * Find the first / in the expression, marking end of match part. Ignore \/.
+ * @returns {int} index of first /
+ */
 function findSplit( text){
 	while( true){
 		var i= text.indexOf( "/")
@@ -29,6 +23,10 @@ function findSplit( text){
 	}
 }
 
+/**
+ * Find last / in the expression, marking end of substitution/beginning of flags. Ignore \/.
+ * @returns {int} index of final /
+ */
 function findTail( text, min){
 	while( true){
 		var i= text.lastIndexOf( "/")
@@ -45,10 +43,17 @@ function findTail( text, min){
 	}
 }
 
+/**
+ * Create a named regex match for the text expression.
+ */
 function regex( text, flags){
 	return nr(new RegExp( text, flags))
 }
 
+/**
+ * Parse the replacement value of an expression into a zipped string/{named,numbered}-group array.
+ * @returns {array} the parsed version of the array
+ */
 function replace( text){
 	var
 	  values= [],
@@ -73,7 +78,10 @@ function replace( text){
 	return values
 }
  
-
+/**
+ * Generate a function that will perform a Perl style substitution for an input text.
+ * @returns {function} function to process the substitution asked for
+ */
 function parse( text){
 	var split= findSplit( text)
 	if( split=== undefined){
@@ -120,6 +128,10 @@ function parse( text){
 	ctx.exec= exec
 	return ctx
 }
+
+/**
+ * This function performs a substitution. Expects a `this` with the capture/replace properties of a `parse`.
+ */
 function exec( text){
 	var capture= this.capture.exec( text)
 	if( !capture){
@@ -145,6 +157,10 @@ function exec( text){
 	return results.join("")
 }
 
+/**
+ * Tagged template string that accepts a Perl style substitution, returns a
+ * function to perform that substitution on a string. Wraps parse.
+ */
 function perls(strings, ...values){
 	var
 	  text= String.raw( strings, values),
@@ -153,6 +169,9 @@ function perls(strings, ...values){
 }
 
 module.exports= perls
+module.exports.exec= exec
+module.exports.findSplit= findSplit
+module.exports.findTail= findTail
 module.exports.parse= parse
 module.exports.perls= perls
 module.exports.regex= regex
