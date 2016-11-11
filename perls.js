@@ -46,7 +46,6 @@ function findTail( text, min){
 }
 
 function regex( text, flags){
-	//text= text.replace("\\", "\\\\")
 	return nr(new RegExp( text, flags))
 }
 
@@ -60,7 +59,7 @@ function replace( text){
 			break
 		}
 		values.push(exec[1])
-		if(values[2] !== undefined){
+		if(exec[2] !== undefined){
 			values.push( parseInt(exec[2]))
 		}else{
 			values.push( exec[3])
@@ -110,7 +109,7 @@ function exec( text){
 				results.push( capture.group( val))
 			}else{
 				// numerical entries are  positional values
-				results.push( capture[ va])
+				results.push( capture[ val])
 			}
 		}else{
 			// static string
