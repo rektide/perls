@@ -77,44 +77,43 @@ function replace( text){
 	}
 	return values
 }
- 
+
 /**
  * Generate a function that will perform a Perl style substitution for an input text.
  * @returns {function} function to process the substitution asked for
  */
-function parse( text){
-	var split= findSplit( text)
+function parse( expression){
+	var split= findSplit( expression)
 	if( split=== undefined){
 		return
 	}
 	var
-	  tail= findTail( text, split),
+	  tail= findTail( expression, split),
 	  flags= ""
 	if( tail!== undefined){
-		flags= text.substring( tail)
+		flags= expression.substring( tail)
 	}else{
-		tail= text.length
+		tail= expression.length
 	}
 
-	// this ought be a clone of exec (with this replaced with arguments.callee) but no good alternative in strict mode.
+	// this ought be a clone of exec (with this replaced with arguments.callee) but 'no good alternative' in strict mode.
 	// but https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/arguments/callee#A_use_of_arguments.callee_with_no_good_alternative
-	// go fuck yourself strict mode! you suck. you really suck. arguments.callee forever, or until a suitable non-regression arrives.
-	var ctx= function( text){
-		var capture= ctx.capture.exec( text)
-		if( !capture){
+	var perls= function( expression){
+		var search= perls.search.exec( expression)
+		if( !search){
 			return
 		}
 		var results= []
-		for(var i= 0; i< ctx.replace.length; ++i){
-			var val= ctx.replace[i]
+		for(var i= 0; i< perls.replace.length; ++i){
+			var val= perls.replace[i]
 			// static strings and values will be zipped, use modulus to branch on each type
 			if( i% 2){
 				if( isNaN( val)){
-					// textual entries are group names
-					results.push( capture.group( val))
+					// expressionual entries are group names
+					results.push( search.group( val))
 				}else{
 					// numerical entries are  positional values
-					results.push( capture[ val])
+					results.push( search[ val])
 				}
 			}else{
 				// static string
@@ -123,18 +122,20 @@ function parse( text){
 		}
 		return results.join("")
 	}
-	ctx.capture= regex( text.substring( 0, split), flags),
-	ctx.replace= replace( text.substring( split+ 1, tail)),
-	ctx.exec= exec
-	return ctx
+	perls.search= regex( expression.substring( 0, split), flags),
+	perls.replace= replace( expression.substring( split+ 1, tail)),
+	perls.exec= exec
+	perls.toString= function(){ return "[perls`"+ perls.expression+ "`]"}
+	perls.expression= expression
+	return perls
 }
 
 /**
- * This function performs a substitution. Expects a `this` with the capture/replace properties of a `parse`.
+ * This function performs a substitution. Expects a `this` with the search/replace properties of a `parse`.
  */
-function exec( text){
-	var capture= this.capture.exec( text)
-	if( !capture){
+function exec( expression){
+	var search= this.search.exec( expression)
+	if( !search){
 		return
 	}
 	var results= []
@@ -144,10 +145,10 @@ function exec( text){
 		if( i% 2){
 			if( isNaN( val)){
 				// textual entries are group names
-				results.push( capture.group( val))
+				results.push( search.group( val))
 			}else{
 				// numerical entries are  positional values
-				results.push( capture[ val])
+				results.push( search[ val])
 			}
 		}else{
 			// static string
@@ -163,9 +164,9 @@ function exec( text){
  */
 function perls(strings, ...values){
 	var
-	  text= String.raw( strings, values),
-	  ctx= parse( text)
-	return ctx
+	  expression= String.raw( strings, values),
+	  perls= parse( expression)
+	return perls
 }
 
 module.exports= perls

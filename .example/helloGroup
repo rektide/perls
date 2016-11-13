@@ -1,0 +1,3 @@
+#!/usr/bin/env node
+module.exports= require( "..")`hello (\w+), hello (\w+)/heyya $1 & $2`
+module.exports.main= require( "./helper").main( module)
