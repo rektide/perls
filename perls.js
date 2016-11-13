@@ -11,12 +11,14 @@ var
  * @returns {int} index of first /
  */
 function findSplit( text){
+	var i= 0
 	while( true){
-		var i= text.indexOf( "/")
+		i= text.indexOf( "/", i)
 		if( i == -1){
 			return
 		}
 		if( text[i-1]=== "\\"){
+			i += 1
 			continue
 		}
 		return i
@@ -91,7 +93,7 @@ function parse( expression){
 	  tail= findTail( expression, split),
 	  flags= ""
 	if( tail!== undefined){
-		flags= expression.substring( tail)
+		flags= expression.substring( tail+ 1)
 	}else{
 		tail= expression.length
 	}
@@ -122,8 +124,11 @@ function parse( expression){
 		}
 		return results.join("")
 	}
-	perls.search= regex( expression.substring( 0, split), flags),
-	perls.replace= replace( expression.substring( split+ 1, tail)),
+	var
+	  searchText= expression.substring( 0, split),
+	  replaceText= expression.substring( split+ 1, tail)
+	perls.search= regex( searchText, flags)
+	perls.replace= replace( replaceText)
 	perls.exec= exec
 	perls.toString= function(){ return "[perls`"+ perls.expression+ "`]"}
 	perls.expression= expression

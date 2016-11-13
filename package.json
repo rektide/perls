@@ -1,6 +1,6 @@
 {
 	"name": "perls",
-	"version": "1.0.2",
+	"version": "1.0.3",
 	"description": "A normative substitution tagged-template function (s// replacement for js).",
 	"main": "perls.js",
 	"scripts": {
