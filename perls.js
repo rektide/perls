@@ -174,6 +174,10 @@ function perls(strings, ...values){
 	return perls
 }
 
+if( require.main=== module){
+	require( "./main").main()
+}
+
 module.exports= perls
 module.exports.exec= exec
 module.exports.findSplit= findSplit
