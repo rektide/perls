@@ -17,31 +17,26 @@ var threeCheers= perls`(:<cheer>(huzzah|cheers))/*$+{cheer}* *$+{cheer}* *$+{che
 
 In other non-JS environments, there's a s/find this/replace with this/ substitution one can run-
 
-## Vim
-```
-:s/replace this/with this/g 10000
-```
-
-## Perl
-```perl
-$myFav =~ s/replace this/with this/
-```
+| language | example |
+| --- | --- |
+| perl | `$myFav =~ s/replace this/with this/` |
+| vim | `:s/replace this/with this/g 10000` |
 
 # Usage
 
 * *Find and replace*
 ```js
-perls``s/change this text/now a replacement/``("it's a good start. change this text.) //=> "it's a good stat. now a replacement"
+perls``change this text/now a replacement/``("it's a good start. change this text.) //=> "it's a good stat. now a replacement"
 ```
 
 * *Use a capture group*
 ```js
-perls``s/find (\w+)/$1 once, $2 twice/``("find this") //=> "this once, this twice"
+perls``find (\w+)/$1 once, $2 twice/``("find this") //=> "this once, this twice"
 ```
 
 * *Use a named capture grou*
 ```
-perls``s/more (:<noun>)/$+{noun}! $+{noun}! $+{noun}`("more obama") //=> "obama! obama! obama!"
+perls``more (:<noun>)/$+{noun}! $+{noun}! $+{noun}`("more obama") //=> "obama! obama! obama!"
 ```
 
 Run the substitution [./.examples](./.examples/) or their [./.tests/](./.tests/ ) to see usage.
