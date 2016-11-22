@@ -1,8 +1,8 @@
 # perl s(ubstitution)
 
-> A `s///`-alike search-and-replace/substitution tagged-template-string for JS.`
+> A `s///`-alike search-and-replace/substitution tagged-template-string for JS.
 
-Makes *Search-and-replace* regex, or *substitutions,* available in JS. Use handy `perls``/find this/replace with/g``` to do text substiution.
+Makes *Search-and-replace* regex, or *substitutions,* available in JS. Use handy ``perls`find this/replace with/g` `` to do text substiution.
 
 ```
 var perls= require("perls")
@@ -10,10 +10,9 @@ var lukesDad= perls`vader/anakin/`("vader") //=> "anakin"
 var threeCheers= perls`(:<cheer>(huzzah|cheers))/*$+{cheer}* *$+{cheer}* *$+{cheer}*/`("huzzah") //=> "*huzzah* *huzzah* *huzzah*"
 ```
 
-
 # Background
 
-`RegExp.prototype.exec` is needed to get results out of regexp groups.
+In JavaScript, `RegExp.prototype.exec` is used to get results out of regexp groups. If just trying to do some text substitution, that means writing a fairly gnarly string to concattenate together some output literal, from that `exec` output. This library exists to bring a more convenient means of doing text substitution to JavaScript.
 
 In other non-JS environments, there's a s/find this/replace with this/ substitution one can run-
 
@@ -26,20 +25,20 @@ In other non-JS environments, there's a s/find this/replace with this/ substitut
 
 * *Find and replace*
 ```js
-perls``change this text/now a replacement/``("it's a good start. change this text.) //=> "it's a good stat. now a replacement"
+perls`change this text/now a replacement/`("it's a good start. change this text.") //=> "it's a good stat. now a replacement"
 ```
 
 * *Use a capture group*
 ```js
-perls``find (\w+)/$1 once, $2 twice/``("find this") //=> "this once, this twice"
+perls`find (\w+)/$1 once, $2 twice/`("find this") //=> "this once, this twice"
 ```
 
 * *Use a named capture grou*
 ```
-perls``more (:<noun>)/$+{noun}! $+{noun}! $+{noun}`("more obama") //=> "obama! obama! obama!"
+perls`more (:<noun>)/$+{noun}! $+{noun}! $+{noun}`("more obama") //=> "obama! obama! obama!"
 ```
 
-Run the substitution [./.examples](./.examples/) or their [./.tests/](./.tests/ ) to see usage.
+Run the substitution [./.example](./.example)s or their [./.test](./.test)s to see usage.
 
 # Install
 

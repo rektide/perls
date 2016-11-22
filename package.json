@@ -1,11 +1,12 @@
 {
 	"name": "perls",
-	"version": "1.0.5",
+	"version": "1.0.6",
 	"description": "A normative substitution tagged-template function (s// replacement for js).",
 	"main": "perls.js",
 	"bin": "./main.js",
 	"scripts": {
-		"test": "./.test/index.js"
+		"test": "./.test/index.js",
+		"files": "ls README.md *json *js"
 	},
 	"repository": {
 		"type": "git",
